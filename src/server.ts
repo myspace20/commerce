@@ -19,17 +19,17 @@ app.use(userRoute)
 
 
 async function main() {
- app.listen(3500,()=>{
-    console.log("Ready")
- })
+    app.listen(3500, () => {
+        console.log("Ready")
+    })
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect()
-    })
     .catch(async (e) => {
         console.error(e)
         await prisma.$disconnect()
         process.exit(1)
+    })
+    .then(async () => {
+        await prisma.$disconnect()
     })

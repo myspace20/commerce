@@ -10,11 +10,11 @@ const userRoute = Router()
 userRoute.get('/',async(req:Request, res:Response)=>{
 
     const users = await prisma.user.findMany({
-        where:{
-        },
-        include:{
-            Post:true
-        }
+        // where:{
+        // },
+        // include:{
+        //     Post:true
+        // }
     })
 
     console.log(users)
