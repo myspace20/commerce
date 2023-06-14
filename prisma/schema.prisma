@@ -7,198 +7,210 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model User{
-  id String @id @default(uuid())
-  email String @unique
-  password String
-  role Role @default(customer)
-  addresses User_address_history[]
-  shopping_cart Shopping_cart []
-  user_reviews User_review []
-  user_payment_method User_payment_method []
-  shop_order Shop_order []
-
+model User {
+  id                  String                 @id @default(uuid())
+  email               String                 @unique
+  password            String
+  role                Role                   @default(customer)
+  addresses           User_address_history[]
+  shopping_cart       Shopping_cart[]
+  user_reviews        User_review[]
+  user_payment_method User_payment_method[]
+  shop_order          Shop_order[]
 }
 
-model User_address_history{
-  address Address @relation(fields: [addressId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+model User_address_history {
+  address   Address @relation(fields: [addressId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
   addressId String
-  userId String
+  userId    String
+
   @@id([addressId, userId])
 }
 
 model Address {
-  id String @id @default(uuid())
-  unit_number Float
+  id             String                 @id @default(uuid())
+  unit_number    Float
   street_address String
-  address_line1 String?
-  address_line2 String?
-  city String
-  region String
-  postal_code String
-  countryId String
-  user User_address_history []
-  country Country @relation(fields: [countryId], references: [id])
-  shop_order Shop_order []
-
+  address_line1  String?
+  address_line2  String?
+  city           String
+  region         String
+  postal_code    String
+  countryId      String
+  user           User_address_history[]
+  country        Country                @relation(fields: [countryId], references: [id])
+  shop_order     Shop_order[]
 }
 
 model Country {
-  id String @id @default(uuid())
+  id           String    @id @default(uuid())
   country_name String
-  address Address []
+  address      Address[]
 }
 
-
-model Shopping_cart{
-  id String @id @default(uuid())
-  shopping_cart_item Shopping_cart_item []
-  user User @relation(fields:[userId], references: [id])
-  userId String
+model Shopping_cart {
+  id                 String               @id @default(uuid())
+  shopping_cart_item Shopping_cart_item[]
+  user               User                 @relation(fields: [userId], references: [id])
+  userId             String
 }
 
 model Shopping_cart_item {
-  id String @id @default(uuid())
-  shopping_cart Shopping_cart @relation(fields:[cartId], references:[id])
-  cartId String
-  product_item Product_item @relation(fields:[product_item_id], references: [id])
+  id              String        @id @default(uuid())
+  shopping_cart   Shopping_cart @relation(fields: [cartId], references: [id])
+  cartId          String
+  product_item    Product_item  @relation(fields: [product_item_id], references: [id])
   product_item_id String
-  qty Int
+  qty             Int
 }
 
-model User_payment_method{
-  id String @id @default(uuid())
-  user User @relation(fields:[userId], references:[id])
-  userId String 
+model User_payment_method {
+  id              String       @id @default(uuid())
+  user            User         @relation(fields: [userId], references: [id])
+  userId          String
   payment_type_id String
-  provider String
-  account_number String
-  expiry_date String
-  is_default Boolean
-  payment_type Payment_type @relation(fields:[payment_type_id], references:[id])
-  shop_order Shop_order []
+  provider        String
+  account_number  String
+  expiry_date     String
+  is_default      Boolean
+  payment_type    Payment_type @relation(fields: [payment_type_id], references: [id])
+  shop_order      Shop_order[]
 }
 
-model Payment_type{
-  id String @id @default(uuid())
-  user_payment_method User_payment_method []
-  value Float
+model Payment_type {
+  id                  String                @id @default(uuid())
+  user_payment_method User_payment_method[]
+  value               Float
 }
-
-
 
 model User_review {
-  id String @id @default(uuid())
-  user User @relation(fields:[userId], references: [id])
-  userId String
-  order_line Order_line @relation(fields:[ordered_product_id], references: [id])
+  id                 String     @id @default(uuid())
+  user               User       @relation(fields: [userId], references: [id])
+  userId             String
+  order_line         Order_line @relation(fields: [ordered_product_id], references: [id])
   ordered_product_id String
-  rating_value Int
-  comment String
+  rating_value       Int
+  comment            String
 }
 
-model promotion_category {
-  category_id String
+model Promotion_category {
+  category_id  String
+  category     Product_category @relation(fields: [category_id], references: [id])
   promotion_id String
+  promotion    Promotion        @relation(fields: [promotion_id], references: [id])
+
+  @@unique([category_id, promotion_id])
 }
 
-model promotion {
-  id String @id @default(uuid())
-  name String 
-  description String
-  discount_rate Float
-  start_date DateTime
-  end_date DateTime
+model Promotion {
+  id               String               @id @default(uuid())
+  name             String
+  description      String
+  discount_rate    Float
+  start_date       DateTime
+  end_date         DateTime
+  product_category Promotion_category[]
 }
 
 model Product {
-  id String @id @default(uuid())
-  category_id String
-  product_item Product_item []
-  name String 
-  description String
-  product_image String
+  id               String           @id @default(uuid())
+  product_category Product_category @relation(fields: [category_id], references: [id])
+  category_id      String
+  product_item     Product_item[]
+  name             String
+  description      String
+  product_image    String
 }
 
 model Product_item {
-  id String @id @default(uuid())
-  order_line Order_line []
-  shopping_cart_item Shopping_cart_item []
-  product Product @relation(fields:[product_id], references: [id])
-  product_id String
-  variation_options Variation_option[]
-  SKU String
-  qty_in_stock Int
-  product_image String
-  price Float
+  id                 String                  @id @default(uuid())
+  order_line         Order_line[]
+  shopping_cart_item Shopping_cart_item[]
+  product            Product                 @relation(fields: [product_id], references: [id])
+  product_id         String
+  variation_options  Product_configuration[]
+  SKU                String
+  qty_in_stock       Int
+  product_image      String
+  price              Float
 }
 
 model Variation {
-  id String @id @default(uuid())
-  category_id String
-  name String
+  id               String             @id @default(uuid())
+  category         Product_category   @relation(fields: [category_id], references: [id])
+  variation_option Variation_option[]
+  category_id      String
+  name             String
 }
 
-model Variation_option{
-  id String @id @default(uuid())
-  product_items Product_item[]
-  value String
+model Variation_option {
+  id            String                  @id @default(uuid())
+  variation     Variation               @relation(fields: [variation_id], references: [id])
+  variation_id  String
+  product_items Product_configuration[]
+  value         String
 }
 
-model product_configuration{
-  product_item_id String
+model Product_configuration {
+  product_items       Product_item     @relation(fields: [product_item_id], references: [id])
+  product_item_id     String
+  variation_options   Variation_option @relation(fields: [variation_option_id], references: [id])
   variation_option_id String
-  @@unique([product_item_id,variation_option_id])
+
+  @@unique([product_item_id, variation_option_id])
 }
 
-model product_category {
-  id String @id @default(uuid())
-  parent_category_id String 
-  category_name String
+model Product_category {
+  id                 String               @id @default(uuid())
+  name               String
+  products           Product[]
+  variations         Variation[]
+  parent_category_id String?
+  parent_category    Product_category?    @relation("categorySubcategory", fields: [parent_category_id], references: [id])
+  subCategory        Product_category[]   @relation("categorySubcategory")
+  promotion          Promotion_category[]
 }
 
-
-model Order_line{
-  id String @id @default(uuid())
-  reviews User_review []
-  product_item Product_item @relation(fields:[product_item_id], references: [id])
+model Order_line {
+  id              String        @id @default(uuid())
+  reviews         User_review[]
+  product_item    Product_item  @relation(fields: [product_item_id], references: [id])
   product_item_id String
-  shop_order Shop_order @relation(fields:[order_id], references: [id])
-  order_id String
-  qty Int
-  price Float
+  shop_order      Shop_order    @relation(fields: [order_id], references: [id])
+  order_id        String
+  qty             Int
+  price           Float
 }
 
 model Shop_order {
-  id String @id @default(uuid())
-  user User @relation(fields:[userId], references: [id])
-  userId String
-  order_line Order_line []
-  shipping_method Shipping_method @relation(fields:[shipping_method_id], references: [id])
-  order_status Order_status @relation(fields:[order_status_id], references: [id])
-  order_date DateTime
-  payment_type User_payment_method @relation(fields:[payment_method_id], references: [id])
-  payment_method_id String
-  user_address Address @relation(fields:[shiping_address_id], references:[id])
+  id                 String              @id @default(uuid())
+  user               User                @relation(fields: [userId], references: [id])
+  userId             String
+  order_line         Order_line[]
+  shipping_method    Shipping_method     @relation(fields: [shipping_method_id], references: [id])
+  order_status       Order_status        @relation(fields: [order_status_id], references: [id])
+  order_date         DateTime
+  payment_type       User_payment_method @relation(fields: [payment_method_id], references: [id])
+  payment_method_id  String
+  user_address       Address             @relation(fields: [shiping_address_id], references: [id])
   shiping_address_id String
   shipping_method_id String
-  order_total Float
-  order_status_id String
+  order_total        Float
+  order_status_id    String
 }
 
-model Shipping_method{
-  id String @id @default(uuid())
-  shop_order Shop_order []
-  name String 
-  price Float
+model Shipping_method {
+  id         String       @id @default(uuid())
+  shop_order Shop_order[]
+  name       String
+  price      Float
 }
 
 model Order_status {
-  id String @id @default(uuid())
-  shop_order Shop_order []
-  status String 
+  id         String       @id @default(uuid())
+  shop_order Shop_order[]
+  status     String
 }
 
 enum Role {
