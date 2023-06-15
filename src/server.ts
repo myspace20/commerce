@@ -1,7 +1,9 @@
 import express, { Application, Response, Request } from 'express'
 import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
-import userRoute from './routes/userRoutes'
+import customer_route from './routes/customer'
+import admin_route from './routes/admin'
+import { authorization } from './middlewares/Authorization'
 
 
 export const prisma = new PrismaClient()
@@ -14,7 +16,12 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use(userRoute)
+
+app.use(authorization)
+
+app.use("/user",customer_route)
+app.use(admin_route)
+
 
 
 

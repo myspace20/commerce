@@ -11,6 +11,7 @@ model User {
   id                  String                 @id @default(uuid())
   email               String                 @unique
   password            String
+  token               String?
   role                Role                   @default(customer)
   addresses           User_address_history[]
   shopping_cart       Shopping_cart[]
@@ -30,7 +31,7 @@ model User_address_history {
 
 model Address {
   id             String                 @id @default(uuid())
-  unit_number    Float
+  unit_number    String
   street_address String
   address_line1  String?
   address_line2  String?
