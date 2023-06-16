@@ -14,35 +14,32 @@ declare module "express-serve-static-core" {
 const secret = process.env.JWT_SECRET as string
 
 
-export const authorization = async (req: Request, res: Response, next:NextFunction) => {
+export const authorization = async (req: Request, res: Response, next: NextFunction) => {
 
-        const { authorization } = req.headers
+    const token = req.headers?.authorization?.split(' ')[1] as string
 
-        if(!authorization){
-            res.status(401).json({error:"Request is not authorized"})
-        }
 
     try {
 
-        const token = req.headers.authorization?.split(' ')[1] as string
+
+        if (!token) throw Error("Request is not authorized")
 
         const { id } = jwt.verify(token, secret) as JwtPayload
 
-        console.log(id)
-
-        const user = prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: {
                 id
             }
         })
+        console.log(user)
 
         req.user = user
-        
+
         next()
 
     } catch (error: any) {
 
-        res.status(401).json({error:error.message})
+        res.status(401).json({ error: error.message })
     }
 
 

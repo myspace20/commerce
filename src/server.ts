@@ -17,10 +17,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 
-app.use(authorization)
 
 app.use("/user",customer_route)
 app.use(admin_route)
+
+// app.use(authorization)
 
 
 
