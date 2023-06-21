@@ -33,23 +33,23 @@ export const signUp = async (req: Request, res: Response) => {
         const hashedPasword = await bcrypt.hash(password, 10)
 
         const createUser = await prisma.user.create({
-            data:{
+            data: {
                 email,
-                password:hashedPasword
+                password: hashedPasword
             }
         })
 
         const id = createUser?.id as string
 
-        const token = jwt.sign({id}, secret,{
-            expiresIn:"1h"
-        }) 
+        const token = jwt.sign({ id }, secret, {
+            expiresIn: "1h"
+        })
 
         const registeredUser = await prisma.user.update({
-            where:{
+            where: {
                 email
             },
-            data:{
+            data: {
                 token
             }
         })

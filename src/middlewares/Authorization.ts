@@ -31,7 +31,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
                 id
             }
         })
-        console.log(user)
+        // console.log(user)
 
         req.user = user
 
@@ -41,8 +41,5 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
 
         res.status(401).json({ error: error.message })
     }
-
-
-
 
 }
