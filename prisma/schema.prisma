@@ -191,7 +191,7 @@ model Shop_order {
   order_line         Order_line[]
   shipping_method    Shipping_method     @relation(fields: [shipping_method_id], references: [id])
   order_status       Order_status        @relation(fields: [order_status_id], references: [id])
-  order_date         DateTime
+  order_date         DateTime @default(now())
   payment_type       User_payment_method @relation(fields: [payment_method_id], references: [id])
   payment_method_id  String
   user_address       Address             @relation(fields: [shiping_address_id], references: [id])
