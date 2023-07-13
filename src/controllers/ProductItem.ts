@@ -9,13 +9,15 @@ export const createProductItem = async (req: Request, res: Response) => {
 
     const newProductItem = await prisma.product_item.create({
         data: {
-            SKU: "",
+            SKU: "111",
             qty_in_stock: 1,
             price: 12,
-            product_image: '',
-            product_id: '',
+            product_image: 'hff',
+            product_id: 'b6c82d47-917f-4589-848a-6921a1e6c54f',
         }
     })
+
+    res.send(newProductItem)
 }
 
 
@@ -26,6 +28,9 @@ export const getProductItem = async (req: Request, res: Response) => {
     const productItem = await prisma.product_item.findFirst({
         where: {
             product_id: id
+        },
+        select:{
+            variation_options:true
         }
     })
 }

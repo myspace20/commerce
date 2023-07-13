@@ -82,7 +82,7 @@ model User_payment_method {
 model Payment_type {
   id                  String                @id @default(uuid())
   user_payment_method User_payment_method[]
-  value               Float
+  value               String
 }
 
 model User_review {
@@ -132,7 +132,7 @@ model Product_item {
   product_id         String
   variation_options  Product_configuration[]
   SKU                String
-  qty_in_stock       Int
+  qty_in_stock       Int 
   product_image      String
   price              Float
 }

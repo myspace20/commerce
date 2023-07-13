@@ -9,12 +9,14 @@ export const createProduct = async(req:Request, res:Response)=>{
     
     const newProduct =  await prisma.product.create({
         data:{
-            name:'',
-            description:'',
-            product_image:"",
-            category_id:'',
+            name:'balenciage',
+            description:'A nice shirt',
+            product_image:"jdhdjdh",
+            category_id:'910e29f2-bedd-41af-9c28-bd901ac955a0',
         }
     })
+
+    res.send(newProduct)
 }
 
 
