@@ -32,7 +32,7 @@ export const updateVariationOption = async(req:Request, res:Response)=>{
 
 export const getVariationOption = async(req:Request, res:Response)=>{
     
-    const variatioOptions = await prisma.variation_option.findMany({})
+    const variationOptions = await prisma.variation_option.findMany({})
 }
 
 
