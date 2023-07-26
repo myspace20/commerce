@@ -10,7 +10,9 @@ export const createVariationOption = async (req: Request, res: Response) => {
     const newVariationOption = await prisma.variation_option.create({
         data:{
             value,
-            variation_id
+            variation:{
+                connect:{id:variation_id}
+            }
         }
     })
 }

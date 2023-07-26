@@ -11,6 +11,7 @@ export const addToCart = async (req: Request, res: Response) => {
     const userId = user.id
 
 
+
     const cart = await prisma.shopping_cart.findFirst({
         where: {
             userId

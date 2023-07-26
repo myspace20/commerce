@@ -4,7 +4,7 @@ export interface userCredentials {
     password: string
 }
 
-export interface userAddress {
+export interface address {
     unitNumber: string,
     streetAddress: string,
     addressLine1?: string,
@@ -12,7 +12,12 @@ export interface userAddress {
     city: string,
     region: string,
     postalCode: string,
-    countryId: string
+    countryId: string,
+}
+
+export interface userAddress{
+    addressId:string,
+    isDefault:boolean
 }
 
 export interface userReview {
@@ -20,3 +25,12 @@ export interface userReview {
     ratingValue: number,
     comment: string
 }
+
+export interface paymentMethodType {
+    paymentTypeId:string,
+    provider:string,
+    accountNumber:string,
+    expiryDate:string,
+    isDefault:boolean
+}
+
