@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import customer_route from './routes/customer'
 import admin_route from './routes/admin'
 import { authorization } from './middlewares/Authorization'
+import { errorMiddleware } from './middlewares/error.middleware'
 
 
 export const prisma = new PrismaClient()
@@ -11,6 +12,8 @@ export const prisma = new PrismaClient()
 
 
 const app: Application = express()
+
+app.use(errorMiddleware)
 
 app.use(cors())
 app.use(express.json())
