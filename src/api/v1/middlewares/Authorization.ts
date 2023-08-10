@@ -14,7 +14,7 @@ declare module "express-serve-static-core" {
 const secret = process.env.JWT_SECRET as string
 
 
-export const authorization = async (req: Request, res: Response, next: NextFunction) => {
+export const authorization = async (req: Request, res: Response, next: NextFunction):Promise<void> => {
 
     const token = req.headers?.authorization?.split(' ')[1] as string
 
@@ -29,6 +29,10 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
         const user = await prisma.user.findUnique({
             where: {
                 id
+            },
+            select:{
+                id:true,
+                email:true
             }
         })
         // console.log(user)

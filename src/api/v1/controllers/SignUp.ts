@@ -45,20 +45,20 @@ export const signUp = async (req: Request, res: Response) => {
             expiresIn: "1h"
         })
 
-        const registeredUser = await prisma.user.update({
-            where: {
-                email
-            },
-            data: {
-                token
-            }
-        })
+        // const registeredUser = await prisma.user.update({
+        //     where: {
+        //         email
+        //     },
+        //     data: {
+        //         token
+        //     }
+        // })
 
         const all = await prisma.user.findMany({})
 
         console.log(all)
 
-        res.status(201).json(registeredUser)
+        // res.status(201).json(registeredUser)
 
     } catch (error: any) {
 

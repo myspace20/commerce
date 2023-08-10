@@ -3,12 +3,12 @@ import { variation, variationOption } from '../types/interfaces/variation.interf
 
 
 export const variationSchema:ObjectSchema<variation> = object({
-    categoryId:string().required(),
-    name:string().required()
+    categoryId:string().required().uuid(),
+    name:string().required().max(30)
 })
 
 
 export const variationOptionSchema:ObjectSchema<variationOption> = object({
-    variationId:string().required(),
-    value:string().required()
+    variationId:string().required().uuid(),
+    value:string().required().max(30)
 })

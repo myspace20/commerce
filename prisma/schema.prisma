@@ -9,15 +9,26 @@ datasource db {
 
 model User {
   id                  String                 @id @default(uuid())
+  name                String
   email               String                 @unique
   password            String
-  token               String?
   role                Role                   @default(customer)
   addresses           User_address_history[]
   shopping_cart       Shopping_cart[]
   user_reviews        User_review[]
   user_payment_method User_payment_method[]
   shop_order          Shop_order[]
+  SessionModel SessionModel[]
+}
+
+model SessionModel {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  valid     Boolean  @default(true)
+  userAgent String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model User_address_history {
@@ -132,7 +143,7 @@ model Product_item {
   product_id         String
   variation_options  Product_configuration[]
   SKU                String
-  qty_in_stock       Int 
+  qty_in_stock       Int
   product_image      String
   price              Float
 }
@@ -191,7 +202,7 @@ model Shop_order {
   order_line         Order_line[]
   shipping_method    Shipping_method     @relation(fields: [shipping_method_id], references: [id])
   order_status       Order_status        @relation(fields: [order_status_id], references: [id])
-  order_date         DateTime @default(now())
+  order_date         DateTime            @default(now())
   payment_type       User_payment_method @relation(fields: [payment_method_id], references: [id])
   payment_method_id  String
   user_address       Address             @relation(fields: [shiping_address_id], references: [id])

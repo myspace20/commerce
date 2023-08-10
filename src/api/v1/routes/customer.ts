@@ -9,6 +9,8 @@ import { addCat } from '../controllers/ProductCategory'
 import { createProduct } from '../controllers/Products'
 import { createProductItem } from '../controllers/ProductItem'
 import { createOrder } from '../controllers/Shop_order'
+import { inputValidation } from '../middlewares/input.validation'
+import { credentialsSchema } from '../validations/user.validation'
 
 
 
@@ -17,7 +19,7 @@ import { createOrder } from '../controllers/Shop_order'
 const customer_route = Router()
 
 customer_route.post('/signup',signUp )
-customer_route.post('/login', Login)
+customer_route.post('/login', inputValidation(credentialsSchema), Login)
 customer_route.post('/address/add', authorization, addUserAddress)
 customer_route.post('/country/add', authorization,addCountry)
 customer_route.get('/allAddress', authorization,getAddressHistory)

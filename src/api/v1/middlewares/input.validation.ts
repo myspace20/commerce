@@ -10,9 +10,9 @@ export const inputValidation = (schema:Schema) => async (req:Request, res:Respon
 
         await schema.validate(payload)
 
-        return next()
+        next()
 
-    } catch (error) {
-        
+    } catch (error:any) {
+        return res.status(400).json({error:error.errors[0]})
     }
 }

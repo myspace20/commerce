@@ -4,6 +4,13 @@ export interface userCredentials {
     password: string
 }
 
+export interface user {
+    email:string,
+    token:string |null,
+    id:string,
+    password:string
+}
+
 export interface address {
     unitNumber: string,
     streetAddress: string,

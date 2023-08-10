@@ -1,11 +1,16 @@
 import express, { Application, Response, Request } from 'express'
+import dotenv from "dotenv"
+dotenv.config() 
+import config from "config"
 import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
 import customer_route from './routes/customer'
 import admin_route from './routes/admin'
 import { authorization } from './middlewares/Authorization'
 import { errorMiddleware } from './middlewares/error.middleware'
+import { inputValidation } from './middlewares/input.validation'
 
+ 
 
 export const prisma = new PrismaClient()
 
@@ -21,7 +26,7 @@ app.use(express.urlencoded({ extended: false }))
 
 
 
-app.use("/user",customer_route)
+app.use("/user", customer_route)
 app.use(admin_route)
 
 // app.use(authorization)

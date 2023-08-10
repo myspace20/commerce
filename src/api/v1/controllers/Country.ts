@@ -1,20 +1,27 @@
+import { NextFunction } from "connect";
+import HttpException from "../exceptions/error.handler";
 import { prisma } from "../server";
 import { Request, Response } from "express";
 
 
 
 
-export const addCountry = async (req: Request, res: Response) => {
+export const addCountry = async (req: Request, res: Response, next:NextFunction) => {
 
-    const { country_name } = req.body
+    const payload = req.body
 
-    const addedCountry  = await prisma.country.create({
-        data: {
-            country_name
-        }
-    })
+    
 
-    res.status(201).json(addedCountry)
+    // const err = new HttpException(404, 'error adding a country')
+
+    // const addedCountry  = await prisma.country.create({
+    //     data: {
+    //         country_name
+    //     }
+    // })
+
+
+    // res.status(201).json(addedCountry)
 
 }
 
