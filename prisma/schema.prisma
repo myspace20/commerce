@@ -144,7 +144,7 @@ model Product_item {
   variation_options  Product_configuration[]
   SKU                String
   qty_in_stock       Int
-  product_image      String
+  product_image      String[]
   price              Float
 }
 

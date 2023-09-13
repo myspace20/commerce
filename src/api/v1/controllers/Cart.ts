@@ -268,7 +268,7 @@ export const deleteCart = async (req: Request, res: Response) => {
     const userId = req.user
 
     const deletedCart = await prisma.shopping_cart.deleteMany({
-        where: userId
+        where: userId,
     })
 
     res.send(deletedCart)

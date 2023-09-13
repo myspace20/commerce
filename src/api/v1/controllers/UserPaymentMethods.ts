@@ -20,14 +20,18 @@ export const getUserPaymentmethod = async(req:Request, res:Response)=>{
 
     const userPaymentMethod = await prisma.user_payment_method.findUnique({
         where:{
-            id:""
+            id:"",
         }
     })
 }
 
 export const getUserPaymentmethods = async(req:Request, res:Response)=>{
 
-    const userPaymentMethods = await prisma.user_payment_method.findMany({})
+    const userPaymentMethods = await prisma.user_payment_method.findMany({
+        where:{
+            userId:""
+        }
+    })
 }
 
 

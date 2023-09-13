@@ -2,14 +2,12 @@ import { prisma } from "../../../v1/server";
 import { omit } from 'lodash'
 import { createUserInput, loginCredentials } from "./user.types";
 import { compareHash } from "../../utils/hash_password.utils";
-import { Prisma } from "@prisma/client";
 
 
 
 export async function createUser(payload: createUserInput) {
     try {
-
-        const exists = await findUser(payload.email)
+        const exists = await findUserByEmail(payload.email)
         if (exists) throw Error("user already exists")
         const user = await prisma.user.create({
             data: payload
@@ -20,12 +18,26 @@ export async function createUser(payload: createUserInput) {
     }
 }
 
+export async function updateUser(email: string) {
+    try {
+        const user = await findUserByEmail(email)
+        if (!user) return false
+        const updatedUser = await prisma.user.update({
+            where: { email: user.email},
+            data: { role: "admin" }
+        })
+        return omit(updatedUser, "password")
+    } catch (e) {
+        
+    }
+}
+
 
 export async function validateHash({
     email,
     password
 }: loginCredentials) {
-    const user = await findUser(email)
+    const user = await findUserByEmail(email)
 
     if (!user) return false
 
@@ -38,10 +50,20 @@ export async function validateHash({
     return omit(user, 'password')
 }
 
-export async function findUser(email: string) {
-    return await prisma.user.findUnique({ where: { email } })
+export async function findUserByEmail(email: string) {
+    try {
+        const user = await prisma.user.findUnique({ where: { email } })
+        return user
+    } catch (e) {
+
+    }
 }
 
 export async function findUserById(id: string) {
-    return await prisma.user.findUnique({ where: { id } })
+    try {
+        const user = await prisma.user.findUnique({ where: { id } })
+        return user
+    } catch (e) {
+
+    }
 }

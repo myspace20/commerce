@@ -14,6 +14,17 @@ import { inputValidation } from './middlewares/input.validation'
 
 export const prisma = new PrismaClient()
 
+// const prod = {
+//     categoryId:"",
+//     name:"nsjns",
+//     description:"sritn",
+//     productImage:"string"
+// }
+
+
+// const validate = productSchema.validate(prod)
+
+// console.log(validate)
 
 
 const app: Application = express()

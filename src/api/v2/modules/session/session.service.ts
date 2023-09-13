@@ -1,8 +1,8 @@
 import { JwtPayload, verify } from "jsonwebtoken";
 import { prisma } from "../../../v1/server";
-import { IcreateSession, IfindSessions, IupdateSession } from "../../types/session.types";
+import { IcreateSession, IfindSessions, IupdateSession } from "./session.types";
 import { get, omit } from "lodash";
-import { findUser, findUserById } from "../user/user.service";
+import { findUserByEmail, findUserById } from "../user/user.service";
 import { signJWT } from "../../utils/jwt.utils";
 import config from "config";
 import { SessionModel } from "@prisma/client";
@@ -55,12 +55,12 @@ export async function reIssueAccessToken({
 
     const user = omit(await findUserById(session.userId), "password")
 
-        if(!user) return false
+    if (!user) return false
 
     const accessToken = signJWT(
-        {...user, session:sessionId},
+        { ...user, session: sessionId },
         "accessTokenPrivateKey",
-        { expiresIn: config.get("accessTokenTtl")}
+        { expiresIn: config.get("accessTokenTtl") }
     )
 
     return accessToken
