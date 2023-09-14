@@ -10,8 +10,6 @@ export const addCountry = async (req: Request, res: Response, next:NextFunction)
 
     const payload = req.body
 
-    
-
     // const err = new HttpException(404, 'error adding a country')
 
     // const addedCountry  = await prisma.country.create({
@@ -43,7 +41,8 @@ export const updateCountry = async (req:Request, res:Response) =>{
 
 export const deleteCountry = async(req:Request, res:Response)=>{
 
-    const deletedCountry = await prisma.country.delete({
+    const deletedCountry = await prisma
+    .country.delete({
         where:{
             id:""
         }

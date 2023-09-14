@@ -15,7 +15,7 @@ export const credentialSchema: ObjectSchema<loginCredentials> = object({
 })
 
 export const userSchema: ObjectSchema<createUserInput> = object({
-    name:string().required("Name is not required").max(50),
+    name:string().required("Name is required").max(50),
     email: string()
         .required("Email is required")
         .email('Invalid email')

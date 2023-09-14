@@ -29,14 +29,4 @@ reviewRoutes.delete("user/orders/reviews/delete/:id", deleteReviewHandler)
 
 
 
-
-
-
-
-
-
-
-
-
-
 export default reviewRoutes
