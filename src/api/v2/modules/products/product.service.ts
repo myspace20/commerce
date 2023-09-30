@@ -60,10 +60,7 @@ export async function updateProduct(id: string, payload: Partial<product>) {
         updates.productImage = payload.productImage
     }
     try {
-        if (!updates.description
-            && !updates.categoryId
-            && !updates.name
-            && !updates.productImage
+        if (Object.keys(updates).length === 0
         ) throw Error("input is required")
 
         const product = await prisma

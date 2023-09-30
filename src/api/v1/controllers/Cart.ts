@@ -11,7 +11,6 @@ export const addToCart = async (req: Request, res: Response) => {
     const userId = user.id
 
 
-
     const cart = await prisma.shopping_cart.findFirst({
         where: {
             userId
@@ -77,7 +76,8 @@ export const addToCart = async (req: Request, res: Response) => {
                     cartId: cart?.id,
                     product_item_id: id,
                     qty: 1
-                }
+                },
+                
             })
 
             const connect = await prisma.shopping_cart.update({
@@ -267,8 +267,10 @@ export const deleteCart = async (req: Request, res: Response) => {
 
     const userId = req.user
 
-    const deletedCart = await prisma.shopping_cart.deleteMany({
-        where: userId,
+    const deletedCart = await prisma.shopping_cart.delete({
+        where: {
+            id:""
+        }
     })
 
     res.send(deletedCart)

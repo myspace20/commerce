@@ -3,8 +3,6 @@ import config from "config"
 import { signUp } from "../../v1/controllers/SignUp";
 
 
-const secret = 'ghjgjg'
-
 
 export function signJWT(
     payload: object,

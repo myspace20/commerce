@@ -74,7 +74,7 @@ model Shopping_cart_item {
   cartId          String
   product_item    Product_item  @relation(fields: [product_item_id], references: [id])
   product_item_id String
-  qty             Int
+  qty             Int @default(1)
 }
 
 model User_payment_method {

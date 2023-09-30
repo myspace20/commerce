@@ -40,7 +40,7 @@ export async function getCategoryHandler(
     res:Response
 ){
     const category = await getCategory(req.params.id)
-    res.status(200).json(category)
+    res.send(category)
 }
 
 export async function getSubCategoryHandler(
@@ -48,7 +48,7 @@ export async function getSubCategoryHandler(
     res:Response
 ){
     const subCategory = await getSubCategory(req.params.id)
-    res.status(200).json(subCategory)
+    res.send(subCategory)
 }
 
 
@@ -57,7 +57,7 @@ export async function updateCategoryHandler(
     res:Response
 ){
     const updatedCategory = await updateCategory(req.body,req.params.id)
-    res.status(200).json(updatedCategory)
+    res.send(updatedCategory)
 }
 
 export async function updateSubCategoryHandler(
@@ -65,7 +65,7 @@ export async function updateSubCategoryHandler(
     res:Response
 ){
     const updatedSubCategory = await updateSubCategory(req.body,req.params.id)
-    res.status(200).json(updatedSubCategory)
+    res.send(updatedSubCategory)
 }
 
 export async function deleteCategoryHandler(
@@ -73,7 +73,7 @@ export async function deleteCategoryHandler(
     res:Response
 ){
     const deletedCategory = await deleteCategory(req.params.id)
-    res.status(200).json(deletedCategory)
+    res.send(deletedCategory)
 }
 
 export async function deleteSubCategoryHandler(
@@ -81,6 +81,6 @@ export async function deleteSubCategoryHandler(
     res:Response
 ){
     const deletedSubCategory = await deleteSubCategory(req.params.id)
-    res.status(200).json(deletedSubCategory)
+    res.send(deletedSubCategory)
 }
 

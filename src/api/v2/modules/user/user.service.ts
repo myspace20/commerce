@@ -21,7 +21,7 @@ export async function createUser(payload: createUserInput) {
 export async function updateUser(email: string) {
     try {
         const user = await findUserByEmail(email)
-        if (!user) return false
+        if (!user) throw Error()
         const updatedUser = await prisma.user.update({
             where: { email: user.email},
             data: { role: "admin" }

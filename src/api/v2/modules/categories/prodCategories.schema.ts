@@ -31,13 +31,15 @@ export const getProdSubCategorySchema:
     })
 
 export const updateProCategorySchema:
-    ObjectSchema<prodCategory & prodCategoryParams> = object({
+    ObjectSchema<prodCategory
+     & prodCategoryParams> = object({
         ...params,
         ...payload
     })
 
 export const updateProdSubCategorySchema:
-    ObjectSchema<prodSubCategory & prodSubCategoryParams> = object({
+    ObjectSchema<prodSubCategory 
+    & prodSubCategoryParams> = object({
         ...params,
         ...payload
     })

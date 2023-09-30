@@ -29,7 +29,7 @@ export const prisma = new PrismaClient()
 
 const app: Application = express()
 
-app.use(errorMiddleware)
+// app.use(errorMiddleware)
 
 app.use(cors())
 app.use(express.json())
