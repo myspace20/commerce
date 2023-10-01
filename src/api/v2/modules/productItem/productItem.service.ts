@@ -86,3 +86,20 @@ export async function deleteProductItem(id: string) {
 
     }
 }
+
+
+export async function decrementProdItem(id:string, qty:number) {
+    try {
+        const item = await prisma.product_item.update({
+            where:{id},
+            data:{
+                qty_in_stock:{
+                    decrement:qty
+                }
+            }
+        })
+        return item
+    } catch (e) {
+        
+    }
+}
