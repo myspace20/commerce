@@ -84,7 +84,7 @@ model User_payment_method {
   payment_type_id String
   provider        String
   account_number  String
-  expiry_date     String
+  expiry_date     DateTime @default(now())
   is_default      Boolean
   payment_type    Payment_type @relation(fields: [payment_type_id], references: [id])
   shop_order      Shop_order[]
@@ -222,7 +222,13 @@ model Shipping_method {
 model Order_status {
   id         String       @id @default(uuid())
   shop_order Shop_order[]
-  status     String
+  status     Status @default(pending)
+}
+
+enum Status {
+  pending
+  processing
+  delivered
 }
 
 enum Role {

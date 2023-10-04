@@ -32,15 +32,16 @@ export async function createOrder(
         const items = cart.shopping_cart_item;
 
         const subTotal = await calcSubTotal(items);
+        //get order status
 
         const order = await prisma.shop_order.create({
             data: {
                 userId,
-                payment_method_id: payload.payment_method_id,
-                shipping_method_id: payload.shipping_method_id,
-                order_status_id: payload.order_status_id,
+                payment_method_id: payload.paymentMethodId,
+                shipping_method_id: payload.shippingMethodId,
+                order_status_id: "",
                 order_total: subTotal,
-                shiping_address_id: payload.shipping_address_id
+                shiping_address_id: payload.shippingAddressId
             }
         });
 
@@ -90,9 +91,9 @@ export async function getAllOrders() {
     }
 }
 
-export async function getUserOrder(userId: string) {
+export async function getUserOrders(userId: string) {
     try {
-        const order = await prisma.shop_order.findFirst({
+        const order = await prisma.shop_order.findMany({
             where: { userId }
         })
         return order
@@ -101,9 +102,9 @@ export async function getUserOrder(userId: string) {
     }
 }
 
-export async function getOrderByAddress(address: string) {
+export async function getOrdersByAddress(address: string) {
     try {
-        const order = await prisma.shop_order.findFirst({
+        const order = await prisma.shop_order.findMany({
             where: { user_address: { street_address: address } }
         })
         return order
@@ -149,3 +150,17 @@ export async function deleteOrder(id: string) {
 
     }
 }
+
+
+// export async function updateOrderStatus(){
+//     try {
+//         const orderStatus = await prisma.shop_order.updateMany({
+//             where:{id},
+//             data:{
+            
+//             }
+//         })
+//     } catch (e) {
+        
+//     }
+// }

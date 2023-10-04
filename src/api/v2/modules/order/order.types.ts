@@ -5,13 +5,20 @@ export type cartItem = {
     id: string
 }
 
+export type orderParams = {
+    id:string
+}
+
+export type Taddress = {
+    address:string
+}
+
 export type Torder = {
     userId:string
-    payment_method_id: string,
-    shipping_method_id: string,
-    order_status_id: string,
-    order_total: number,
-    shipping_address_id:string
+    paymentMethodId: string,
+    shippingMethodId: string,
+    orderTotal: number,
+    shippingAddressId:string
 }
 
 export type TorderPayload = Omit<Torder,"userId">
