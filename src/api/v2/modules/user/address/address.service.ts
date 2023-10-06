@@ -28,7 +28,7 @@ export async function addUserAddress(
                     }
                 }
             })
-            return address
+        return address
     } catch (e) {
 
     }
@@ -36,42 +36,72 @@ export async function addUserAddress(
 
 
 export async function updateUserAddress(
-    userId:string,
-    addressId:string,
-    payload:TaddressPayload
-){
+    userId: string,
+    addressId: string,
+    payload: TaddressPayload
+) {
     try {
         const updates: Partial<TaddressPayload> = {}
 
-    if (payload.city) {
-        updates.city = payload.city
-    }
-    if (payload.countryId) {
-        updates.countryId = payload.countryId
-    }
-    if (payload.postalCode) {
-        updates.postalCode = payload.postalCode
-    }
-    if (payload.region) {
-        updates.region = payload.region
-    }
-    if (payload.streetAddress) {
-        updates.streetAddress = payload.streetAddress
-    }
-    if (payload.unitNumber) {
-        updates.unitNumber = payload.unitNumber
-    }
+        if (payload.city) {
+            updates.city = payload.city
+        }
+        if (payload.countryId) {
+            updates.countryId = payload.countryId
+        }
+        if (payload.postalCode) {
+            updates.postalCode = payload.postalCode
+        }
+        if (payload.region) {
+            updates.region = payload.region
+        }
+        if (payload.streetAddress) {
+            updates.streetAddress = payload.streetAddress
+        }
+        if (payload.unitNumber) {
+            updates.unitNumber = payload.unitNumber
+        }
         const address = await prisma
-        .user_address_history.update({
-            where:{
-                addressId_userId:{
-                    addressId,
-                    userId
-                }
-            },
-            data:updates
-        })
+            .user_address_history.update({
+                where: {
+                    addressId_userId: {
+                        addressId,
+                        userId
+                    }
+                },
+                data:
+            })
+        return address
     } catch (e) {
-        
+
+    }
+}
+
+export async function getUserAddressHistory(userId: string) {
+    try {
+        const address = await prisma.user_address_history.findMany({
+            where: {
+                userId
+            }
+        })
+        return address
+    } catch (e) {
+
+    }
+}
+
+export async function deleteUserAddress(addressId: string, userId: string) {
+    try {
+        const address = await prisma.user_address_history.delete({
+            where: {
+                addressId_userId: {
+                    userId,
+                    addressId
+                }
+            }
+        })
+        return address
+    } catch (e) {
+
     }
 }

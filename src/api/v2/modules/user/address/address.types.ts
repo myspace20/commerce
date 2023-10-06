@@ -6,7 +6,7 @@ export type addressParam ={
 
 export type TaddressPayload = {
     unitNumber: string
-    streetAddress:string
+    streetAddress:string,
     city:string
     region:string 
     postalCode:string,
