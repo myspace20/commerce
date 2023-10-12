@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint",
     "start": "node ./dist/server.ts",
     "dev": "nodemon ./src/api/v1/server.ts",
     "bulid": "tsc -p"
@@ -35,10 +36,14 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lodash": "^4.14.196",
     "@types/validator": "^13.7.17",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "dayjs": "^1.11.9",
+    "eslint": "^8.51.0",
     "nodemon": "^2.0.22",
     "pino": "^8.15.0",
     "pino-pretty": "^10.2.0",
+    "prettier": "^3.0.3",
     "prisma": "^4.15.0",
     "prom-client": "^14.2.0",
     "response-time": "^2.3.2",
