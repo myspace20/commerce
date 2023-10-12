@@ -5,4 +5,6 @@ export default {
     refreshTokenPublicKey: "REFRESH_PUBLIC_KEY",
     dbUri: "DB_CONNECTION",
     Port: "PORT",
+    accessTokenTtl:"ACCESS_TOKEN_TTL",
+    refreshTokenTt:"REFRESH_TOKEN_TTL"
   };

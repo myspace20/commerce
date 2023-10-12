@@ -6,19 +6,19 @@ import { signUp } from "../../v1/controllers/SignUp";
 
 export function signJWT(
     payload: object,
-    keyName: "accessTokenPrivateKey" | "refreshTokenPrivateKey",
+    keyName: string,
     options?: jwt.SignOptions | undefined
 ) {
-    const signingKey = Buffer.from(
-        config.get<string>(keyName),
-        "base64"
-    ).toString("ascii")
+    // const signingKey = Buffer.from(
+    //     config.get<string>(keyName),
+    //     "base64"
+    // ).toString("ascii")
+    const signingKey = keyName
 
     console.log(signingKey)
 
     return jwt.sign(payload, signingKey, {
-        ...(options && options),
-        algorithm: "RS256"
+        ...(options && options)
     })
 }
 

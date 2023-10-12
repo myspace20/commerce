@@ -12,14 +12,14 @@ import {
 const shippingMethodRouter = Router()
 
 
-shippingMethodRouter.post("shipping/method/create", createShippingMethodHandler)
+shippingMethodRouter.post("/shipping/method/create", createShippingMethodHandler)
 
-shippingMethodRouter.get("shipping/method/get/:id", getShippingMethodHandler)
+shippingMethodRouter.get("/shipping/method/get/:id", getShippingMethodHandler)
 
-shippingMethodRouter.get("shipping/method/get/all", getShippingMethodsHandler)
+shippingMethodRouter.get("/shipping/method/get/all", getShippingMethodsHandler)
 
-shippingMethodRouter.put("shipping/method/update/:id", updateShippingMethodHandler)
+shippingMethodRouter.put("/shipping/method/update/:id", updateShippingMethodHandler)
 
-shippingMethodRouter.delete("shipping/method/remove/:id", deleteShippingMethodHandler)
+shippingMethodRouter.delete("/shipping/method/remove/:id", deleteShippingMethodHandler)
 
 export default shippingMethodRouter

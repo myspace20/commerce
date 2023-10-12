@@ -22,8 +22,7 @@ export async function updateUserAddressHandler(
     req: Request<addressParam, {}, TaddressPayload>,
     res: Response
 ) {
-    const userId = ""
-    const address = await updateUserAddress(req.params.id, userId, req.body)
+    const address = await updateUserAddress(req.params.id,req.body)
     res.send(address)
 }
 

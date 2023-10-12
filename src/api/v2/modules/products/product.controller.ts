@@ -14,12 +14,8 @@ export async function createProductHandler(
     req: Request<{}, {}, product>,
     res: Response
 ) {
-    try {
-        const product = await createProduct(req.body)
-        return res.send(product)
-    } catch (e) {
-
-    }
+    const product = await createProduct(req.body)
+    return res.send(product)
 }
 
 

@@ -6,6 +6,7 @@ import { findUserByEmail, findUserById } from "../user/user.service";
 import { signJWT } from "../../utils/jwt.utils";
 import config from "config";
 import { SessionModel } from "@prisma/client";
+import ApiError from "../../utils/error";
 
 
 export async function createSession({ userId, userAgent }: IcreateSession) {
@@ -23,6 +24,15 @@ export async function findSessions(query: IfindSessions) {
         .findFirst({
             where: { userId: query.userId, valid: query.valid }
         })
+}
+
+export async function findAllSessions() {
+    try {
+        const session = await prisma.sessionModel.findMany({})
+        return session
+    } catch (e) {
+        throw new ApiError(400, "Session not found")
+    }
 }
 
 export async function updateSession(

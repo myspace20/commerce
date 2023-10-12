@@ -14,8 +14,7 @@ const secret = process.env.JWT_SECRET as string
 
 export const Login = async (req: Request, res: Response) => {
 
-    
-
+res.send("hello")
     // try {
 
     //     if (!email || !password) throw Error("All fields are required")

@@ -23,8 +23,8 @@ export const getProductItem = async (req: Request, res: Response) => {
         where: {
             product_id: id
         },
-        select:{
-            variation_options:true
+        include:{
+            variation_options:true,
         }
     })
 }

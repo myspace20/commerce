@@ -36,7 +36,6 @@ export async function addUserAddress(
 
 
 export async function updateUserAddress(
-    userId: string,
     addressId: string,
     payload: TaddressPayload
 ) {
@@ -62,14 +61,11 @@ export async function updateUserAddress(
             updates.unitNumber = payload.unitNumber
         }
         const address = await prisma
-            .user_address_history.update({
+            .address.update({
                 where: {
-                    addressId_userId: {
-                        addressId,
-                        userId
-                    }
+                   id:addressId
                 },
-                data:
+                data:updates
             })
         return address
     } catch (e) {

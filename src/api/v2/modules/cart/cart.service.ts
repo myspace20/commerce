@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "../../../v1/server";
 import { createCartItem, findCartItem, increaseCartItemQty } from "./cartItem/cartItem.service";
 import { getProductItem } from "../productItem/productItem.service";
+import ApiError from "../../utils/error";
 
 
 
@@ -19,7 +20,7 @@ export async function addToCart(userId: string, itemId: string) {
         const prodItem = await getProductItem(itemId)
 
         if (prodItem?.qty_in_stock === 0) {
-            throw Error()
+            throw new ApiError(404, "Product is out of stock")
         }
         const userCart = await getUserCart(userId)
         const cartItem = await findCartItem(itemId)
@@ -45,7 +46,7 @@ export async function addToCart(userId: string, itemId: string) {
 
         return cart
     } catch (e) {
-
+        throw new ApiError(400, "Something went wrong")
     }
 
 }
@@ -62,7 +63,7 @@ export async function createCart(userId: string, itemId: string) {
         const prodItem = await getProductItem(itemId)
         const userCart = await getUserCart(userId)
         if (prodItem?.qty_in_stock === 0) {
-            throw Error()
+            throw new ApiError(400, "Product is out of stock")
         }
         if (userCart) {
             return userCart
@@ -97,7 +98,7 @@ export async function getCart(id: string) {
             })
         return cart
     } catch (e) {
-
+        throw new ApiError(400, "Cart not found")
     }
 }
 

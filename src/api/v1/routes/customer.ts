@@ -19,7 +19,7 @@ import { credentialsSchema } from '../validations/user.validation'
 const customer_route = Router()
 
 customer_route.post('/signup',signUp )
-customer_route.post('/login', Login)
+customer_route.get('/login', Login)
 customer_route.post('/address/add', authorization, addUserAddress)
 customer_route.post('/country/add', authorization,addCountry)
 customer_route.get('/allAddress', authorization,getAddressHistory)

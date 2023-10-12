@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { validateHash } from "../user/user.service";
-import { createSession, findSessions, updateSession } from "./session.service";
+import { createSession, findAllSessions, findSessions, updateSession } from "./session.service";
 import { signJWT } from "../../utils/jwt.utils";
 import config from "config";
 import { loginCredentials } from "../user/user.types";
@@ -8,14 +8,9 @@ import { loginCredentials } from "../user/user.types";
 
 
 export async function createSessionHandler(
-    req: Request<
-        {},
-        {},
-        loginCredentials,
-        {}>,
+    req: Request<{},{},loginCredentials,{}>,
     res: Response
 ) {
-
     //validate password
     const user = await validateHash(req.body)
 
@@ -30,7 +25,7 @@ export async function createSessionHandler(
 
     const accessToken = signJWT(
         { ...user, session: session.id },
-        "accessTokenPrivateKey",
+        process.env.ACCESS_TOKEN_PRIVATE_KEY as string,
         { expiresIn: config.get("accessTokenTtl") }
     )
 
@@ -41,6 +36,8 @@ export async function createSessionHandler(
         "refreshTokenPrivateKey",
         { expiresIn: config.get("refreshTokenTtl") }
     )
+    
+    res.cookie("accessToken", accessToken, {httpOnly:true})
 
     return res.send({ accessToken, refreshToken })
 }
@@ -52,6 +49,14 @@ export async function getUserSessionHandler(req: Request, res: Response) {
     const sessions = await findSessions({ userId, valid: true })
 
     return res.send(sessions)
+}
+
+export async function findAllSessionsHandler(
+    req:Request,
+    res:Response
+){
+    const session = await findAllSessions()
+    res.send(session)
 }
 
 

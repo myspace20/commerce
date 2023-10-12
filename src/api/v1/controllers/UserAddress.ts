@@ -49,14 +49,13 @@ export const updateAddress = async (req: Request, res: Response) => {
 
     const user = req?.user
 
-    const updatedAddress = await prisma.user_address_history.update({
+    const updatedAddress = await prisma.address.update({
         where: {
-            addressId_userId: {
-                userId: "",
-                addressId: ""
-            }
+           id:""
         },
-        data:req.body
+        data:{
+            c
+        }
     })
 
     res.status(200).json(updatedAddress)

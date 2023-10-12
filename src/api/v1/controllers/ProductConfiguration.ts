@@ -7,17 +7,15 @@ export const addProductVariants = async (req: Request, res: Response) => {
 
     const { product_item_id, value } = req.body
 
-    const newProductVariant = await prisma.product_item.update({
-        where: {
-            id: product_item_id
-        },
-        data: {
-            variation_options: {
-                create: [
-                    { variation_options: { create: { value, variation_id: '' } } }
-                ]
-            }
-        }
+    const newProductVariant = await prisma.product_configuration.create({
+      data:{
+        product_item_id,
+        variation_option_id:"",
+        
+      },
+      include:{
+        
+      }
     })
 }
 
@@ -31,7 +29,9 @@ export const updateProductConfig = async(req:Request, res:Response)=>{
                  variation_option_id:""
             }
         },
-        data:req.body
+        data:{
+           variation_option_id:""
+        }
     })
 }
 

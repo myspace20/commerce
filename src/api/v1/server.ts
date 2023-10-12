@@ -9,6 +9,10 @@ import admin_route from './routes/admin'
 import { authorization } from './middlewares/Authorization'
 import { errorMiddleware } from './middlewares/error.middleware'
 import { inputValidation } from './middlewares/input.validation'
+import sessionRouter from '../v2/modules/session/session.routes'
+import userRouter from '../v2/modules/user/user.routes'
+import cartRouter from '../v2/modules/cart/cart.routes'
+import productRouter from '../v2/modules/products/product.routes'
 
  
 
@@ -37,10 +41,21 @@ app.use(express.urlencoded({ extended: false }))
 
 
 
-app.use("/user", customer_route)
-app.use(admin_route)
 
-// app.use(authorization)
+
+// app.use("/user", customer_route)
+// app.use(admin_route)
+
+app.use(userRouter)
+
+app.use(sessionRouter)
+
+app.use(cartRouter)
+
+app.use(productRouter)
+
+app.use(errorMiddleware);
+
 
 
 

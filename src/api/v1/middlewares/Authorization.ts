@@ -4,7 +4,6 @@ import * as dotenv from 'dotenv'
 import { prisma } from '../server'
 
 dotenv.config()
-
 declare module "express-serve-static-core" {
     interface Request {
         user?: any;

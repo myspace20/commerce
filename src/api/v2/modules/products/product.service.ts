@@ -1,4 +1,5 @@
 import { prisma } from "../../../v1/server";
+import ApiError from "../../utils/error";
 import { product, productParams } from "./product.types";
 
 
@@ -17,7 +18,7 @@ export async function createProduct(payload: product) {
             })
         return product
     } catch (e) {
-
+        throw new ApiError(409, "Error adding new product")
     }
 }
 

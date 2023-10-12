@@ -4,10 +4,10 @@ import HttpException from "../exceptions/error.handler";
 
 export const errorMiddleware = async(error: HttpException, req:Request, res:Response, next:NextFunction) =>{
     
-    const status = error.status || 505
+    const status = error.status 
     const message = error.message || 'something went wrong'
 
-    res.status(status).json({error:message})
+    res.status(status).json({error:message,})
 
-    next(error)
+    return next(error)
 }

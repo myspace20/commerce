@@ -9,12 +9,12 @@ import { addToCartHandler,
 
 const cartRouter = Router()
 
-cartRouter.get("cart/user/get", getUserCartHandler)
+cartRouter.get("/cart/user/get", getUserCartHandler)
 
-cartRouter.post("cart/add", addToCartHandler)
+cartRouter.post("/cart/add", addToCartHandler)
 
-cartRouter.post("cart/remove", deleteCartHandler)
+cartRouter.post("/cart/remove", deleteCartHandler)
 
-cartRouter.delete("cart/remove/all", deleteCartsHandler)
+cartRouter.delete("/cart/remove/all", deleteCartsHandler)
 
 export default cartRouter

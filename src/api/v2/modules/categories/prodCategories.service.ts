@@ -96,9 +96,16 @@ export async function updateSubCategory(
     id: string
 ) {
     try {
+        const updates: Partial<prodCategory> = {}
+        if(payload.name){
+            updates.name = payload.name
+        }
+        if(Object.keys(updates).length === 0){
+            throw Error()
+        }
         const updateSubCategory = await prisma
             .product_category.update({
-                data: { name: payload.name },
+                data: updates,
                 where: { id }
             })
         return updateSubCategory

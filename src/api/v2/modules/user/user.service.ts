@@ -1,7 +1,8 @@
 import { prisma } from "../../../v1/server";
 import { omit } from 'lodash'
 import { createUserInput, loginCredentials } from "./user.types";
-import { compareHash } from "../../utils/hash_password.utils";
+import { compareHash, createHash } from "../../utils/hash_password.utils";
+import { has } from "config";
 
 
 
@@ -9,6 +10,8 @@ export async function createUser(payload: createUserInput) {
     try {
         const exists = await findUserByEmail(payload.email)
         if (exists) throw Error("user already exists")
+        const hash = await createHash(payload.password)
+        payload.password = hash
         const user = await prisma.user.create({
             data: payload
         })
@@ -39,7 +42,9 @@ export async function validateHash({
 }: loginCredentials) {
     const user = await findUserByEmail(email)
 
-    if (!user) return false
+    if (!user) {
+        return false
+    }
 
     const hash = user.password
 
@@ -53,10 +58,10 @@ export async function validateHash({
 export async function findUserByEmail(email: string) {
     try {
         const user = await prisma
-        .user.findUnique({ where: { email } })
+        .user.findUnique({ where: { email }})
         return user
     } catch (e) {
-
+        throw Error("user not found")
     }
 }
 

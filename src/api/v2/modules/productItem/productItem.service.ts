@@ -26,7 +26,11 @@ export async function createProductItem(payload: productItem) {
 export async function getProductItems() {
     try {
         const products = await prisma
-            .product_item.findMany({})
+            .product_item.findMany({
+                include:{
+                    variation_options:true
+                }
+            })
         return products
     } catch (e) {
 
@@ -37,7 +41,10 @@ export async function getProductItems() {
 export async function getProductItem(id: string) {
     try {
         const product = await prisma
-            .product_item.findUnique({ where: { id } })
+            .product_item.findUnique({
+                where: { id },
+                include: { variation_options: true }
+            })
         return product
     } catch (e) {
 
@@ -61,9 +68,10 @@ export async function updateProductItem(id: string, payload: Partial<productItem
         updates.productImage = payload.productImage
     }
     try {
-        if (Object.keys(updates).length < 1
-        ) throw Error("input is required")
-        
+        if (Object.keys(updates).length === 0) {
+            throw Error("input is required")
+        }
+
         const product = await prisma
             .product_item.update({
                 where: { id },
@@ -88,18 +96,18 @@ export async function deleteProductItem(id: string) {
 }
 
 
-export async function decrementProdItem(id:string, qty:number) {
+export async function decrementProdItem(id: string, qty: number) {
     try {
         const item = await prisma.product_item.update({
-            where:{id},
-            data:{
-                qty_in_stock:{
-                    decrement:qty
+            where: { id },
+            data: {
+                qty_in_stock: {
+                    decrement: qty
                 }
             }
         })
         return item
     } catch (e) {
-        
+
     }
 }

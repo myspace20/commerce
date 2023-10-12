@@ -13,6 +13,6 @@ export const inputValidation = (schema:Schema) => async (req:Request, res:Respon
         next()
 
     } catch (error:any) {
-        return res.status(400).json({error:error.errors[0]})
+        return res.status(400).json({error:error.message})
     }
 }
