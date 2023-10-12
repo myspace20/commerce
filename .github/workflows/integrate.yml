@@ -1,0 +1,14 @@
+name: My CI Workflow
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+
+    - name: Echo "I did it"
+      run: echo "I did it"
