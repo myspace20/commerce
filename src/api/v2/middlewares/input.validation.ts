@@ -7,12 +7,14 @@ export const inputValidation =
     const payload = req.body;
     const params = req.params;
     const query = req.query;
+    const locals = res.locals
 
     try {
       await schema.validate({
         payload,
         params,
         query,
+        locals
       });
       next();
     } catch (error: any) {

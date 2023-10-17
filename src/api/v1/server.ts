@@ -13,10 +13,18 @@ import sessionRouter from '../v2/modules/session/session.routes'
 import userRouter from '../v2/modules/user/user.routes'
 import cartRouter from '../v2/modules/cart/cart.routes'
 import productRouter from '../v2/modules/products/product.routes'
-
+import { userAuth } from '../v2/middlewares/auth.middleware'
+import metricsApp from '../v2/metrics/metrics'
+import startMetricsServer from '../v2/metrics/server'
+import cookieParser from 'cookie-parser'
+import userAddressRouter from '../v2/modules/user/address/address.routes'
+import { logger } from '../v2/utils/logger'
+import reponseTime from "response-time"
  
 
 export const prisma = new PrismaClient()
+
+
 
 // const prod = {
 //     categoryId:"",
@@ -33,15 +41,25 @@ export const prisma = new PrismaClient()
 
 const app: Application = express()
 
-// app.use(errorMiddleware)
-
 app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(errorMiddleware);
+
+app.use(reponseTime())
+
+
+
+// app.use(errorMiddleware)
 
 
 
 
+
+
+
+app.use(userAuth)
 
 // app.use("/user", customer_route)
 // app.use(admin_route)
@@ -54,7 +72,11 @@ app.use(cartRouter)
 
 app.use(productRouter)
 
-app.use(errorMiddleware);
+app.use(userAddressRouter)
+
+
+
+
 
 
 
@@ -62,8 +84,9 @@ app.use(errorMiddleware);
 
 async function main() {
     app.listen(3500, () => {
-        console.log("Ready")
+        logger.info("Server started on port 3500")
     })
+    startMetricsServer(metricsApp)
 }
 
 main()

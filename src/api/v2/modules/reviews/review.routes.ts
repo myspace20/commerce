@@ -1,32 +1,70 @@
 import { Router } from "express";
 import {
-    createReviewHandler,
-    deleteReviewHandler,
-    getReviewHandler,
-    getReviewsHandler,
-    getUserReviewHandler,
-    getUserReviewsHandler,
-    updateReviewHandler
+  createReviewHandler,
+  deleteReviewHandler,
+  getReviewHandler,
+  getReviewsHandler,
+  getUserReviewHandler,
+  getUserReviewsHandler,
+  updateReviewHandler,
 } from "./review.controllers";
+import requireAuth from "../../middlewares/requireAuth";
+import { inputValidation } from "../../middlewares/input.validation";
+import {
+  createReviewSchema,
+  deleteReviewSchema,
+  getReviewSchema,
+  updateReviewSchema,
+} from "./review.schema";
+import catchAsync from "../../utils/catchAsync";
 
+const reviewRoutes = Router();
 
+reviewRoutes.post(
+  "user/orders/review/create",
+  requireAuth,
+  inputValidation(createReviewSchema),
+  catchAsync(createReviewHandler)
+);
 
-const reviewRoutes = Router()
+reviewRoutes.get(
+  "orders/reviews/get",
+  requireAuth,
+  catchAsync(getReviewsHandler)
+);
 
-reviewRoutes.post("user/orders/review/create", createReviewHandler)
+reviewRoutes.get(
+  "orders/review/get/:id",
+  requireAuth,
+  inputValidation(getReviewSchema),
+  catchAsync(getReviewHandler)
+);
 
-reviewRoutes.get("orders/reviews/get", getReviewsHandler)
+reviewRoutes.get(
+  "user/orders/reviews/get",
+  requireAuth,
+  catchAsync(getUserReviewsHandler)
+);
 
-reviewRoutes.get("orders/review/get/:id", getReviewHandler)
+reviewRoutes.get(
+  "user/orders/reviews/get/:id",
+  requireAuth,
+  inputValidation(getReviewSchema),
+  catchAsync(getUserReviewHandler)
+);
 
-reviewRoutes.get("user/orders/reviews/get", getUserReviewsHandler)
+reviewRoutes.post(
+  "user/orders/reviews/update/:id",
+  requireAuth,
+  inputValidation(updateReviewSchema),
+  catchAsync(updateReviewHandler)
+);
 
-reviewRoutes.get("user/orders/reviews/get/:id", getUserReviewHandler)
+reviewRoutes.delete(
+  "user/orders/reviews/remove/:id",
+  requireAuth,
+  inputValidation(deleteReviewSchema),
+  catchAsync(deleteReviewHandler)
+);
 
-reviewRoutes.post("user/orders/reviews/update/:id", updateReviewHandler)
-
-reviewRoutes.delete("user/orders/reviews/delete/:id", deleteReviewHandler)
-
-
-
-export default reviewRoutes
+export default reviewRoutes;

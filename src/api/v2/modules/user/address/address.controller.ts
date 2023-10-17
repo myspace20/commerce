@@ -30,7 +30,7 @@ export async function getUserAddressHistoryHandler(
     req: Request,
     res: Response
 ) {
-    const userId = ""
+    const userId = "67b25de5-ac78-40ba-98ff-541ac4970137"
     const address = await getUserAddressHistory(userId)
     res.send(address)
 }

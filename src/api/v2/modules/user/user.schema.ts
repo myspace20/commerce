@@ -1,5 +1,26 @@
 import { ObjectSchema, string, object } from "yup";
-import { createUserInput, loginCredentials } from "./user.types";
+import { createUserInput, TfindUserByEmail, TfindUserById, loginCredentials, TUpdateUser } from "./user.types";
+import { findUserByEmail } from "./user.service";
+
+export const findUserByEmailSchema:ObjectSchema<TfindUserByEmail> = object({
+    email: string()
+        .required("Email is required")
+        .email('Invalid email')
+        .max(50),
+})
+
+export const updateUserSchema:ObjectSchema<TUpdateUser> = object({
+    email: string()
+        .required("Email is required")
+        .email('Invalid email')
+        .max(50),
+})
+
+export const findUserByIdSchema:ObjectSchema<TfindUserById> = object({
+    id: string()
+        .required("id is required")
+        .uuid("invalid id")
+})
 
 
 

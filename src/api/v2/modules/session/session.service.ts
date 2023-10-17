@@ -7,72 +7,84 @@ import { signJWT } from "../../utils/jwt.utils";
 import config from "config";
 import { SessionModel } from "@prisma/client";
 import ApiError from "../../utils/error";
-
+import { logger } from "../../utils/logger";
 
 export async function createSession({ userId, userAgent }: IcreateSession) {
-    const session = await prisma
-        .sessionModel
-        .create({ data: { userAgent, userId } })
+  try {
+    const session = await prisma.sessionModel.create({
+      data: { userAgent, userId },
+    });
 
-    return session
+    return session;
+  } catch (e) {
+    logger.error(e);
+    throw new ApiError(400, "error while processing request");
+  }
 }
 
-
 export async function findSessions(query: IfindSessions) {
-    return await prisma
-        .sessionModel
-        .findFirst({
-            where: { userId: query.userId, valid: query.valid }
-        })
+  try {
+    const sessions = await prisma.sessionModel.findFirst({
+      where: { userId: query.userId, valid: query.valid },
+    });
+    return sessions;
+  } catch (e) {
+    logger.error(e);
+    throw new ApiError(400, "error while processing request");
+  }
 }
 
 export async function findAllSessions() {
-    try {
-        const session = await prisma.sessionModel.findMany({})
-        return session
-    } catch (e) {
-        throw new ApiError(400, "Session not found")
-    }
+  try {
+    const session = await prisma.sessionModel.findMany({});
+    return session;
+  } catch (e) {
+    logger.error(e);
+    throw new ApiError(400, "error while processing request");
+  }
 }
 
 export async function updateSession(
-    query: Pick<IupdateSession, "id">,
-    update: Pick<IupdateSession, 'valid'>
+  query: Pick<IupdateSession, "id">,
+  update: Pick<IupdateSession, "valid">
 ) {
-    return await prisma
-        .sessionModel.update({
-            where: { id: query.id },
-            data: { valid: update.valid }
-        })
+  try {
+    const session = await prisma.sessionModel.update({
+      where: { id: query.id },
+      data: { valid: update.valid },
+    });
+    return session;
+  } catch (e) {
+    logger.error(e);
+    throw new ApiError(400, "error while processing request");
+  }
 }
 
-export async function reIssueAccessToken({
-    refreshToken
-}: {
-    refreshToken: string
-}) {
-    const { decoded } = verify(refreshToken, "refreshTokenPublicKey") as JwtPayload
+export async function reIssueAccessToken(refreshToken: string) {
+  const { decoded } = verify(
+    refreshToken,
+    process.env.ACCESS_PUBLIC_KEY as string
+  ) as JwtPayload;
 
-    if (!decoded || !get(decoded, "session")) return false
+  if (!decoded || !get(decoded, "session")) return false;
 
-    const sessionId = get(decoded, "session")
+  const sessionId = decoded;
 
-    const session = await prisma.
-        sessionModel
-        .findUnique({ where: sessionId }) as SessionModel
+  const session = (await prisma.sessionModel.findUnique({
+    where: sessionId,
+  })) as SessionModel;
 
-    if (!sessionId || !session.valid) return false
+  if (!sessionId || !session.valid) return false;
 
-    const user = omit(await findUserById(session.userId), "password")
+  const user = omit(await findUserById(session.userId), "password");
 
-    if (!user) return false
+  if (!user) return false;
 
-    const accessToken = signJWT(
-        { ...user, session: sessionId },
-        "accessTokenPrivateKey",
-        { expiresIn: config.get("accessTokenTtl") }
-    )
+  const accessToken = signJWT(
+    { ...user, session: sessionId },
+    "accessTokenPrivateKey",
+    { expiresIn: config.get("accessTokenTtl") }
+  );
 
-    return accessToken
-
-} 
+  return accessToken;
+}

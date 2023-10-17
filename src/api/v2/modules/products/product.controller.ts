@@ -1,68 +1,61 @@
 import { Request, Response } from "express";
 import {
-    createProduct,
-    deleteProduct,
-    getProduct,
-    getProducts,
-    updateProduct
+  createProduct,
+  deleteProduct,
+  getProduct,
+  getProducts,
+  updateProduct,
 } from "./product.service";
 import { product } from "./product.types";
-
-
+import { requestTimer } from "../../metrics/metrics";
 
 export async function createProductHandler(
-    req: Request<{}, {}, product>,
-    res: Response
+  req: Request<{}, {}, product>,
+  res: Response
 ) {
-    const product = await createProduct(req.body)
-    return res.send(product)
+  const product = await createProduct(req.body);
+  return res.send(product);
 }
 
-
-export async function getProductsHandler(
-    req: Request,
-    res: Response
-) {
-    try {
-        const products = await getProducts()
-        return res.send(products)
-    } catch (error) {
-
-    }
+export async function getProductsHandler(req: Request, res: Response) {
+    const metricsLabels = {
+        operation: "createProduct",
+      };
+    
+      const timer = requestTimer.startTimer();
+  try {
+    const products = await getProducts();
+    timer({route:req.route, method:req.method, code:req.statusCode})
+    return res.send(products);
+  } catch (error) {}
 }
 
 export async function getProductHandler(
-    req: Request<{ id: string }, {}, {}>,
-    res: Response
+  req: Request<{ id: string }, {}, {}>,
+  res: Response
 ) {
-    try {
-        const product = await getProduct(req.params.id)
-        return res.send(product)
-    } catch (e) {
-
-    }
+  try {
+    const product = await getProduct(req.params.id);
+    return res.send(product);
+  } catch (e) {}
 }
 
 export async function updateProductHandler(
-    req: Request<{ id: string }, {}, Partial<product>>,
-    res: Response
+  req: Request<{ id: string }, {}, Partial<product>>,
+  res: Response
 ) {
-    try {
-        const product = await updateProduct(req.params.id, req.body)
-        return res.send(product)
-    } catch (e) {
-
-    }
+  try {
+    const product = await updateProduct(req.params.id, req.body);
+    return res.send(product);
+  } catch (e) {}
 }
 
 export async function deleteProductHandler(
-    req: Request<{ id: string }, {}, {}>,
-    res: Response
+  req: Request<{ id: string }, {}, {}>,
+  res: Response
 ) {
-    try {
-        const product = await deleteProduct(req.params.id)
-        return res.send(product)
-    } catch (e) {
-
-    }
+  try {
+    const product = await deleteProduct(req.params.id);
+    return res.send(product);
+  } catch (e) {}
 }
