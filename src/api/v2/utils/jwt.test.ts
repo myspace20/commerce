@@ -5,4 +5,5 @@ it('should sign a JWT token with valid payload and keyName', () => {
     const keyName = 'secretKey';
     const token = signJWT(payload, keyName);
     expect(token).toBeDefined();
-  });
+});
+

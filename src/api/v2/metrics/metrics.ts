@@ -1,30 +1,31 @@
-import promClient,{ collectDefaultMetrics, Registry, Histogram } from "prom-client";
+import { Registry, Histogram, collectDefaultMetrics } from "prom-client";
 import express, { Application, Response, Request } from "express";
 
-const metricsApp: Application = express();
+export const metricsApp: Application = express();
 
 const register = new Registry();
+register.setDefaultLabels({
+  app: "commerce",
+});
 
+export const requestHistogram = new Histogram({
+  name: "http_request_duration_ms",
+  help: "Duration of HTTP requests in ms",
+  labelNames: ["method", "route", "code"],
+  // buckets for response time from 0.1ms to 1s
+  buckets: [0.1, 5, 15, 50, 100, 200, 300, 400, 500, 1000],
+});
 
-// register.setDefaultLabels({
-//   app: "commerce metrics",
-// });
-
-export const requestTimer = new Histogram({
-    name:"commerce",
-    help:"Duration of Http Request",
-    labelNames:["method", "route", "code"],
-    buckets : [0.1, 5, 15, 50, 100, 200,300, 400,500,1000]
+export const databaseCallsHistogram = new Histogram({
+  name:"Database_call_response",
+  help:"Database response in ms",
+  labelNames:["operation", "success"]
 })
 
-async function metricsHandler(req: Request, res: Response) {
-    // collectDefaultMetrics()
-    console.log("Live")
-//   const metrics = await register.metrics().;
+collectDefaultMetrics({register})
+
+metricsApp.get("/metrics", async (req: Request, res: Response) => {
   res.setHeader("Content-Type", register.contentType);
-  res.send("Hello");
-}
-
-metricsApp.get("/metrics", metricsHandler);
-
-export default metricsApp
+  const metrics = await register.metrics()
+  res.send(metrics)
+});

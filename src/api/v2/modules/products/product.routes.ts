@@ -15,8 +15,8 @@ import roleAuth from "../../middlewares/roleAuth";
 const productRouter = Router();
 
 productRouter.post("/product/create", [
-  requireAuth,
-  roleAuth,
+  // requireAuth,
+  // roleAuth,
   inputValidation(createProductSchema),
   catchAsync(createProductHandler),
 ]);

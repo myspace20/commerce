@@ -13,7 +13,7 @@ const sessionRouter = Router();
 
 sessionRouter.post(
   "/user/login",
-  // inputValidation(credentialSchema),
+  inputValidation(credentialSchema),
   catchAsync(createSessionHandler)
 );
 

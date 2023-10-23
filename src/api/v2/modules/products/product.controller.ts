@@ -7,7 +7,6 @@ import {
   updateProduct,
 } from "./product.service";
 import { product } from "./product.types";
-import { requestTimer } from "../../metrics/metrics";
 
 export async function createProductHandler(
   req: Request<{}, {}, product>,
@@ -18,14 +17,8 @@ export async function createProductHandler(
 }
 
 export async function getProductsHandler(req: Request, res: Response) {
-    const metricsLabels = {
-        operation: "createProduct",
-      };
-    
-      const timer = requestTimer.startTimer();
   try {
     const products = await getProducts();
-    timer({route:req.route, method:req.method, code:req.statusCode})
     return res.send(products);
   } catch (error) {}
 }

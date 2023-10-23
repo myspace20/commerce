@@ -10,9 +10,9 @@ import { signJWT, verifyJWT } from "../../utils/jwt.utils";
 import config from "config";
 import { loginCredentials } from "../user/user.types";
 import { verify } from "jsonwebtoken";
-import { requestTimer } from "../../metrics/metrics";
 import { logger } from "../../utils/logger";
 import ApiError from "../../utils/error";
+import { requestHistogram } from "../../metrics/metrics";
 
 export async function createSessionHandler(
   req: Request<{}, {}, loginCredentials>,
@@ -47,20 +47,17 @@ export async function createSessionHandler(
     { expiresIn: config.get("refreshTokenTtl") }
   );
 
-  res.cookie("accessToken", accessToken,{
-    maxAge:9000,
-    httpOnly:true
+  res.cookie("accessToken", accessToken, {
+    maxAge: 9000,
+    httpOnly: true,
   });
 
-  res.cookie("refreshToken", refreshToken,{
-      maxAge:9000000,
-      httpOnly:true
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: 9000000,
+    httpOnly: true,
   });
 
-  const { decoded } = verifyJWT(
-    accessToken,
-    process.env.SECRET as string
-  );
+  const { decoded } = verifyJWT(accessToken, process.env.SECRET as string);
 
   return res.send(decoded);
 }
@@ -82,12 +79,12 @@ export async function deleteSessionHandler(req: Request, res: Response) {
   try {
     const sessionId = res.locals.user.session;
 
-  await updateSession({ id: sessionId }, { valid: false });
+    await updateSession({ id: sessionId }, { valid: false });
 
-  return res.send({
-    accessToken: null,
-    refreshToken: null,
-  });
+    return res.send({
+      accessToken: null,
+      refreshToken: null,
+    });
   } catch (e) {
     logger.error(e);
     throw new ApiError(400, "error while processing request");
