@@ -10,12 +10,11 @@ export const inputValidation =
     const locals = res.locals
 
     try {
-      await schema.validate({
-        payload,
-        params,
-        query,
-        locals
-      });
+      await schema.validate(payload);
+      await schema.validate(params)
+      await schema.validate(query)
+      await schema.validate(locals)
+
       next();
     } catch (error: any) {
       return res.status(400).json({ error: error.message });
