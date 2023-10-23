@@ -1,20 +1,48 @@
 import { Router } from "express";
 import {
-    addUserAddressHandler,
-    deleteUserAddressHandler,
-    getUserAddressHistoryHandler,
-    updateUserAddressHandler
+  addUserAddressHandler,
+  deleteUserAddressHandler,
+  getUserAddressHistoryHandler,
+  updateUserAddressHandler,
 } from "./address.controller";
+import requireAuth from "../../../middlewares/requireAuth";
+import { inputValidation } from "../../../middlewares/input.validation";
+import {
+  addUserAddressSchema,
+  deleteUserAddressSchema,
+  getUserAddressHistorySchema,
+  updateUserAddressSchema,
+} from "./address.schema";
+import catchAsync from "../../../utils/catchAsync";
 
-const userAddressRouter = Router()
+const userAddressRouter = Router();
 
+userAddressRouter.post(
+  "/user/address/add",
+  requireAuth,
+  inputValidation(addUserAddressSchema),
+  catchAsync(addUserAddressHandler)
+);
 
-userAddressRouter.post("user/address/add", addUserAddressHandler)
+userAddressRouter.put(
+  "/user/address/update/:id",
+  requireAuth,
+  inputValidation(updateUserAddressSchema),
+  catchAsync(updateUserAddressHandler)
+);
 
-userAddressRouter.put("user/address/update/:id", updateUserAddressHandler)
+userAddressRouter.get(
+  "/user/address/get/all",
+  requireAuth,
+  inputValidation(getUserAddressHistorySchema),
+  catchAsync(getUserAddressHistoryHandler)
+);
 
-userAddressRouter.get("user/address/get/all", getUserAddressHistoryHandler)
+userAddressRouter.delete(
+  "/user/address/remove",
+  requireAuth,
+  inputValidation(deleteUserAddressSchema),
+  catchAsync(deleteUserAddressHandler)
+);
 
-userAddressRouter.delete("user/address/remove", deleteUserAddressHandler)
-
-export default userAddressRouter
+export default userAddressRouter;

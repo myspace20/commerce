@@ -15,7 +15,7 @@ export function signJWT(
     // ).toString("ascii")
     const signingKey = keyName
 
-    console.log(signingKey)
+    // console.log(signingKey)
 
     return jwt.sign(payload, signingKey, {
         ...(options && options)
@@ -24,11 +24,9 @@ export function signJWT(
 
 export function verifyJWT(
     token: string,
-    keyName: "accessTokenPublicKey" | "refreshTokenPublicKey"
+    keyName: string
 ) {
-    const publicKey = Buffer.from(config.get<string>(keyName), "base64").toString(
-        "ascii"
-    );
+    const publicKey = keyName
     try {
         const decoded = jwt.verify(token, publicKey)
         return {

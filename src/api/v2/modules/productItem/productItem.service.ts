@@ -1,4 +1,5 @@
 import { prisma } from "../../../v1/server";
+import { databaseCallsHistogram } from "../../metrics/metrics";
 import { productItem } from "./productItem.types";
 
 
@@ -24,6 +25,10 @@ export async function createProductItem(payload: productItem) {
 
 
 export async function getProductItems() {
+    const metricLabels = {
+        operation:"Get Product"
+    }
+    const timer = databaseCallsHistogram.startTimer()
     try {
         const products = await prisma
             .product_item.findMany({
@@ -31,9 +36,10 @@ export async function getProductItems() {
                     variation_options:true
                 }
             })
+            timer({...metricLabels, success:"true"})
         return products
     } catch (e) {
-
+        timer({...metricLabels, success:"false"})
     }
 }
 

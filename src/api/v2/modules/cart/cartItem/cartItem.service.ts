@@ -5,12 +5,12 @@ import { getUserCart } from "../cart.service";
 
 
 /**
-         * Creates a new item in a shopping cart.
-         * 
-         * @param {string} cartId - The ID of the shopping cart.
-         * @param {string} itemId - The ID of the product item to be added to the cart.
-         * @returns {Promise<object>} The newly created cart item, including its ID, cart ID, product item ID, quantity, and the associated shopping cart record.
-         */
+     * Creates a new item in a shopping cart.
+     * 
+     * @param {string} cartId - The ID of the shopping cart.
+     * @param {string} itemId - The ID of the product item to be added to the cart.
+     * @returns {Promise<object>} The newly created cart item, including its ID, cart ID, product item ID, quantity, and the associated shopping cart record.
+ */
 export async function createCartItem(cartId: string, itemId: string) {
     try {
         const cartItem = await prisma
